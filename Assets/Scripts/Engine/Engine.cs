@@ -84,7 +84,6 @@ public class Engine
 
     }
 
-
     public static void currant_update(int x, int y, float[][] p, float[][] i, float[] pc, float[] ic, float alpha)
     {
         p[x + 1][2 * y + 1] = (1 - alpha) * p[x + 1][2 * y + 1] + alpha * pc[0];  //à droite
@@ -509,6 +508,23 @@ public class Engine
                 pression[k][l] = Mathf.Clamp(pression[k][l], -MaxPValue, MaxPValue); ;
             }
         }
+
+    }
+
+
+    public static void reset_pressure(int x, int y, int dir)
+    {
+        // reset pressure if no component end on both side
+
+
+        if (dir == 0)
+            pression[x][2 * y - 1] = 0;  //à droite ok
+        if (dir == 1)
+            pression[x - 1][2 * y - 2] = 0;  //en haut
+        if (dir == 2)
+            pression[x - 1][2 * y - 1] = 0;  //à gauche ok
+        if (dir == 3)
+            pression[x - 1][2 * y] = 0;  //en bas
 
     }
 }

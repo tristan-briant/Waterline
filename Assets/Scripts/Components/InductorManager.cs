@@ -64,15 +64,6 @@ public class InductorManager : BaseComponent
         i[3] = 0;
     }
 
-
-    float Sature(float x)
-    {
-        if (x > 0)
-            return x / (1 + x);
-        else
-            return x / (1 - x);
-    }
-
     public void UpdateValue()
     {
 

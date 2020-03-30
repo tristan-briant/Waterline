@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PressostatManager : BaseComponent {
+public class PressostatManager : BaseComponent
+{
 
 
     GameObject water, water2, bubble, cadranMin, cadranMax, arrow, shine, tubeH, tubeV, gauge, value;
@@ -14,14 +15,16 @@ public class PressostatManager : BaseComponent {
 
     public float setPointHigh;
     public float setPointLow;
-    public float pMax=1;
+    public float pMax = 1;
     protected float qq = 0;
 
     public bool symmetric = true;
     public bool Symmetric { get => symmetric; set { symmetric = value; DrawCadran(); } }
 
 
-    public float SetPointHigh { get => setPointHigh;
+    public float SetPointHigh
+    {
+        get => setPointHigh;
         set
         {
             if (value <= SetPointLow) { setPointHigh = setPointLow; isSuccess = false; }
@@ -29,7 +32,9 @@ public class PressostatManager : BaseComponent {
             DrawCadran();
         }
     }
-    public float SetPointLow { get => setPointLow;
+    public float SetPointLow
+    {
+        get => setPointLow;
         set
         {
             if (value >= setPointHigh) { setPointLow = setPointHigh; isSuccess = false; }
@@ -38,10 +43,12 @@ public class PressostatManager : BaseComponent {
         }
     }
 
-    public float PMax {
+    public float PMax
+    {
         get => pMax;
-        set {
-            pMax = Mathf.Max(value,0.1f);
+        set
+        {
+            pMax = Mathf.Max(value, 0.1f);
             DrawCadran();
         }
     }
@@ -59,8 +66,6 @@ public class PressostatManager : BaseComponent {
         stopper.transform.localRotation = Quaternion.Euler(new Vector3(0, 0, 90 * (direction)));*/
 
     }
-
-
 
     protected override void Start()
     {
@@ -95,7 +100,7 @@ public class PressostatManager : BaseComponent {
 
     }
 
-  
+
 
     protected void DrawCadran()
     {
@@ -107,33 +112,38 @@ public class PressostatManager : BaseComponent {
 
         valueM = GetComponentInChildren<ValueManager>();
         valueM.ReDraw(Mathf.Round(100 * 0.5f * (setPointHigh + SetPointLow)) / 100);
- 
+
     }
 
     public override void Calcule_i_p(float[] p, float[] i, float dt)
     {
         p2 = p[2];
-        
-        q += i[2] / C * dt;
+
+        /*q += i[2] / C * dt;
         q *= 0.999f;
 
         p[2] = q + i[2] * R;
-        i[2] = (p2 - q) / R;
+        i[2] = (p2 - q) / R;*/
+
+        q = p2;
+        q *= 0.999f;
+        p[2] = q;
+
     }
 
     public override void Constraint(float[] p, float[] i, float dt)
     {
-        i[0] = i[1] = i[3] = 0;
+        i[0] = i[1] = i[2] = i[3] = 0;
     }
-    
+
     public override void Rotate()
     {
-        switch (dir%4)
+        switch (dir % 4)
         {
             case 0:
                 gauge.transform.localPosition = new Vector3(2, 4, 0);
                 tubeH.SetActive(true);
-                tubeH.transform.localScale = new Vector3(1,1,1);
+                tubeH.transform.localScale = new Vector3(1, 1, 1);
                 tubeV.SetActive(false);
                 break;
             case 1:
@@ -157,7 +167,7 @@ public class PressostatManager : BaseComponent {
         }
 
         gc.StopperChanged = true;
-       
+
     }
 
     public virtual void UpdateSuccess()
@@ -172,8 +182,9 @@ public class PressostatManager : BaseComponent {
     {
         UpdateSuccess();
 
-        const float alpha = 0.05f;
+        const float alpha = 0.1f;
         qq = alpha * q + (1 - alpha) * qq;
+        //qq=q;
 
         if (success == 1)
             animator.SetTrigger("win");
@@ -190,7 +201,7 @@ public class PressostatManager : BaseComponent {
         animator.SetFloat("rate", rate);
 
 
-        float v = Mathf.Round(20 * qq) / 20;
+        float v = Mathf.Round(100 * qq) / 100;
         valueM.value = v;
     }
 

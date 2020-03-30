@@ -6863,7 +6863,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1588628516484562, guid: 6185554249a847f48a73df938c96182d, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1745348827527260, guid: 6185554249a847f48a73df938c96182d, type: 3}
       propertyPath: m_Name
@@ -12686,6 +12686,7 @@ GameObject:
   - component: {fileID: 941661279}
   - component: {fileID: 941661278}
   - component: {fileID: 941661277}
+  - component: {fileID: 941661281}
   m_Layer: 5
   m_Name: SendMail
   m_TagString: Untagged
@@ -12732,7 +12733,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 941661275}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
@@ -12815,6 +12816,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 941661275}
   m_CullTransparentMesh: 0
+--- !u!114 &941661281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 941661275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 331656a08ebb0a8408663adcc1033647, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &949640106 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 224084804489358250, guid: 7b4e9236626790b478fb8436943d1cd8,

@@ -2,7 +2,8 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InletManager : BaseFrontier {
+public class InletManager : BaseFrontier
+{
 
     public float pset;
     public float Pset
@@ -36,14 +37,14 @@ public class InletManager : BaseFrontier {
 
 
     float pp = 0;
-    float ii=0;
-    GameObject water,water0, arrow;
+    float ii = 0;
+    GameObject water, water0, arrow;
     //public bool isSuccess=false;
     public bool jelly = false;
     Color jellyColor = new Color(0xFF / 255.0f, 0x42 / 255.0f, 0x6A / 255.0f);
     Color jellyColorBg = new Color(0x42 / 255.0f, 0x42 / 255.0f, 0x42 / 255.0f);
     public int mode = 0;
-    public float periode=2;
+    public float periode = 2;
 
 
 
@@ -87,36 +88,38 @@ public class InletManager : BaseFrontier {
 
         }
 
+        // New
+        f += (p[0] - ppset) / L * dt;
+        f = Mathf.Clamp(f, -Imax, Imax);
 
-        q += (i[0] + ii) / C * dt;
-        f += (p[0] - pp) / L * dt;
+        i[0] = f;
+        //p[0] = (q + (i[0] - f) * R);
 
-        p[0] = (q + (i[0] - f) * R);
-        //p[0] = ppset;
-        i[0] = (f + (p0 - q) / R);
-        ii = (-f + (pp - q) / R);
+        // !New
 
-        if (-imax < ii && ii < imax)
-        {
-            //pp=ppset;      
-            Rin = Mathf.Clamp(Rin - 0.05f, 0, 20);
-            //Rin = 0;
-        }
-        else
-        {
-            Rin = Mathf.Clamp(Rin + 0.01f, 0, 20);
+        /*
+                q += (i[0] + ii) / C * dt;
+                f += (p[0] - pp) / L * dt;
 
-            // pp = 0.9f * pp;
-            /*if(ii > imax)
-                ii = imax;
-            else
-                ii = -imax;
+                p[0] = (q + (i[0] - f) * R);
+                //p[0] = ppset;
+                i[0] = (f + (p0 - q) / R);
+                ii = (-f + (pp - q) / R);
 
-            pp = p[0];*/
-        }
-        //Rin = 0;
-        pp = ppset - ii * Rin;
 
+
+
+
+                        if (-imax < ii && ii < imax)
+                        {
+                            Rin = Mathf.Clamp(Rin - 0.05f, 0, 20);
+                        }
+                        else
+                        {
+                            Rin = Mathf.Clamp(Rin + 0.01f, 0, 20);
+                        }
+                        pp = ppset - ii * Rin;
+                */
 
         if (isSuccess)
         {
@@ -130,7 +133,7 @@ public class InletManager : BaseFrontier {
 
     public override void Calcule_i_p_blocked(float[] p, float[] i, float dt, int index)
     {
-        
+
     }
 
     protected override void Start()
@@ -149,19 +152,20 @@ public class InletManager : BaseFrontier {
                 water.GetComponent<Image>().color = jellyColor;
                 water0.GetComponent<Image>().color = jellyColor;
             }
-            else {
+            else
+            {
                 water.GetComponent<Image>().color = jellyColorBg;
                 water0.GetComponent<Image>().color = jellyColorBg;
             }
         }
 
-        if (mode == 2) StartCoroutine(generateRandom()); 
+        if (mode == 2) StartCoroutine(generateRandom());
     }
-        
+
 
     private void Update()
     {
-       
+
         if (!jelly)
         {
             water.GetComponent<Image>().color = PressureColor(ppset);

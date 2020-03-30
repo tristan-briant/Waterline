@@ -35,8 +35,8 @@ public class OuletManager : BaseFrontier
     }
 
 
-    GameObject water=null, water0=null, arrow=null, bubble=null, moulin;
-    
+    GameObject water = null, water0 = null, arrow = null, bubble = null, moulin;
+
     public bool periodic = false;
     public float periode = 2;
     public float Periode { get => periode; set => periode = value; }
@@ -52,7 +52,7 @@ public class OuletManager : BaseFrontier
     protected override void Start()
     {
         base.Start();
-       
+
 
         if (transform.Find("Water"))
             water = transform.Find("Water").gameObject;
@@ -75,7 +75,7 @@ public class OuletManager : BaseFrontier
 
     void InitializeSuccess()
     {
-        GameObject successValue=null;
+        GameObject successValue = null;
 
         if (transform.Find("ValueHolder/SuccessValue"))
             successValue = transform.Find("ValueHolder/SuccessValue").gameObject;
@@ -133,13 +133,24 @@ public class OuletManager : BaseFrontier
             ppset = pset;
 
         p0 = p[0];
-        f = i[0]; //for bubble animation
-        
+        C=0.1f;
+        R=1.0f;
+        q += (i[0] - f) / C * dt;
+
+        f = i[0]; // pas conventionnel mais ça marche carrément mieux !
+        f += (p0 - ppset) / L * dt;
+        f = Mathf.Clamp(f, -Imax, Imax);
+
+        p[0] = q + R * (i[0] - f);
+        i[0] = f + (p0 - q) / R;
+        //i[0] = f;
+
     }
 
     float pp = 0;
     public override void Constraint(float[] p, float[] i, float dt)
     {
+        /*
         if (Mathf.Abs(i[0]) < Imax)
         {
             pp = 0.01f * ppset + 0.99f * pp;
@@ -153,6 +164,7 @@ public class OuletManager : BaseFrontier
             //i[0] = ii;
             i[0] = Mathf.Clamp(i[0], -Imax, Imax);
         }
+        */
     }
 
     public override void Reset_i_p()
@@ -167,7 +179,7 @@ public class OuletManager : BaseFrontier
             water.GetComponent<Image>().color = PressureColor(ppset);
         if (water0)
             water0.GetComponent<Image>().color = PressureColor(p0);
-        
+
         if (bubble)
             bubble.GetComponent<Animator>().SetFloat("speed", -SpeedAnim());
 
@@ -181,16 +193,16 @@ public class OuletManager : BaseFrontier
 
         if (moulin)
         {
-            moulin.GetComponent<Animator>().SetFloat("speed", Mathf.Clamp(ppset,-3f,3f));
+            moulin.GetComponent<Animator>().SetFloat("speed", Mathf.Clamp(ppset, -3f, 3f));
         }
 
         if (isSuccess)
         {
-            const float timeSuccess = 4.0f;  
+            const float timeSuccess = 4.0f;
             if (f > 0.2f)
-                success = Mathf.Clamp(success + Time.deltaTime/ timeSuccess, 0, 1);
+                success = Mathf.Clamp(success + Time.deltaTime / timeSuccess, 0, 1);
             else
-                success = Mathf.Clamp(success - 10 * Time.deltaTime/ timeSuccess, 0, 1);
+                success = Mathf.Clamp(success - 10 * Time.deltaTime / timeSuccess, 0, 1);
         }
 
         if (Mathf.Abs(f) > fMinBubble)

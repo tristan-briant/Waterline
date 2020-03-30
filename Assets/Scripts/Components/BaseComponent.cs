@@ -603,11 +603,20 @@ public class BaseComponent : MonoBehaviour, IBeginDragHandler, IDragHandler,
         return Mathf.Round(x * 1000) / 1000;
     }
 
+    public float Sature(float x)
+    {
+        if (x > 0)
+            return x / (1 + x);
+        else
+            return x / (1 - x);
+    }
+
+
     virtual public String ToString(char name = 'e')
     {
-        if(name=='e')
+        if (name == 'e')
             return "e"; //empty component
-            
+
         // sinon '[N]ame' + '[L]ocked' + [D]ir/Mirror
         String str = "";
         str += name;

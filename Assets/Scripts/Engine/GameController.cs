@@ -311,8 +311,31 @@ public class GameController : MonoBehaviour
     public void PutAllStopper()
     {
         for (int j = 0; j < M; j++)
+        {
             for (int i = 0; i < N; i++)
-                composants[i][j].PutStoppers();
+            {
+                composants[i][j].RemoveAllStoppers();
+
+                if (i > 0 && composants[i][j].HasTubeEnd(2) && !composants[i - 1][j].HasTubeEnd(0))
+                    composants[i][j].PutStopper(2);
+                if (i < N - 1 && composants[i][j].HasTubeEnd(0) && !composants[i + 1][j].HasTubeEnd(2))
+                    composants[i][j].PutStopper(0);
+                if (j > 0 && composants[i][j].HasTubeEnd(1) && !composants[i][j - 1].HasTubeEnd(3))
+                    composants[i][j].PutStopper(1);
+                if (j < M - 1 && composants[i][j].HasTubeEnd(3) && !composants[i][j + 1].HasTubeEnd(1))
+                    composants[i][j].PutStopper(3);
+
+
+                // reset pressure if no components
+                if (i < N - 1 && j > 0 && j < M - 1 && !composants[i][j].HasTubeEnd(0) && !composants[i + 1][j].HasTubeEnd(2))
+                    Engine.reset_pressure(i, j, 0);
+                if (i > 0 && j < M - 1 && !composants[i][j].HasTubeEnd(3) && !composants[i][j + 1].HasTubeEnd(1))
+                    Engine.reset_pressure(i, j, 3);
+
+
+            }
+        }
+
 
         if (BaseComponent.itemBeingDragged != null)
         {
