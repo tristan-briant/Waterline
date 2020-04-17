@@ -13,14 +13,14 @@ public class CaptureAndShare : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    /*void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
             Debug.Log("capture");
             StartCoroutine(TakeSSAndShare());
         }
-    }
+    }*/
 
     private IEnumerator TakeSSAndShare()
     {
