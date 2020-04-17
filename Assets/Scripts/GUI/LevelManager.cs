@@ -53,8 +53,10 @@ public class LevelManager : MonoBehaviour
         else
         {
             DestroyImmediate(gameObject);
-        }  
+            return;
+        }
 
+        Application.targetFrameRate = 30;
 
         /*AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         AndroidJavaObject activity = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
@@ -82,7 +84,7 @@ public class LevelManager : MonoBehaviour
                 fd = inputPFD
 
         */
-    
+
         AndroidJavaObject activityObject = unityPlayerClass.GetStatic<AndroidJavaObject>("currentActivity");
         AndroidJavaObject intent = activityObject.Call<AndroidJavaObject>("getIntent");
 
@@ -257,8 +259,6 @@ public class LevelManager : MonoBehaviour
 
         }
     }
-
-
 
 
     public int LevelMax()
