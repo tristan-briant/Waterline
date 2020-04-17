@@ -50,8 +50,8 @@ public class Pipeline : BaseComponent {
     private void Update()
     {
         SetPressure(Mathf.Clamp(0.25f * (p0 + p2), -1f, 1f));
-        water0.GetComponent<Image>().color = PressureColor(p0);
-        water2.GetComponent<Image>().color = PressureColor(p2);
+        water0.GetComponent<Image>().color = SmoothPressureColor(0,p0);
+        water2.GetComponent<Image>().color = SmoothPressureColor(2,p2);
         
         bubble.GetComponent<Animator>().SetFloat("speed", -SpeedAnim());
     }

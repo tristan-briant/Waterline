@@ -154,10 +154,10 @@ public class TransistorManager : BaseComponent
 
     private void Update()
     {
-        water1.GetComponent<Image>().color = PressureColor(p1);
-        water2.GetComponent<Image>().color = PressureColor(p2);
-        water3.GetComponent<Image>().color = PressureColor(p3);
-        water.GetComponent<Image>().color = PressureColor((p1 + p2 + p3) / 3);
+        water1.GetComponent<Image>().color = SmoothPressureColor(1,p1);
+        water2.GetComponent<Image>().color = SmoothPressureColor(2,p2);
+        water3.GetComponent<Image>().color = SmoothPressureColor(3,p3);
+        water.GetComponent<Image>().color = SmoothPressureColor(4,(p1 + p2 + p3) / 3);
 
         GetComponent<Animator>().SetFloat("open", Mathf.Clamp(NPN ? f2 : -f2, 0, 0.99f));
 

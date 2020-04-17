@@ -28,7 +28,7 @@ public class ConfigPanel : MonoBehaviour {
         gameObject.AddComponent<GraphicRaycaster>();
     }
 
-    public void Close()
+    virtual public void Close()
     {
         Destroy(gameObject);
         if(selec)

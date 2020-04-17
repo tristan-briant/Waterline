@@ -109,10 +109,10 @@ public class capacitorManager : BaseComponent
 
     private void Update()
     {
-        waterIn0.GetComponent<Image>().color = PressureColor(q0 + q);
-        waterIn2.GetComponent<Image>().color = PressureColor(q2 + q);
-        water0.GetComponent<Image>().color = PressureColor(p0);
-        water2.GetComponent<Image>().color = PressureColor(p2);
+        waterIn0.GetComponent<Image>().color = SmoothPressureColor(4,q0 + q);
+        waterIn2.GetComponent<Image>().color = SmoothPressureColor(5,q2 + q);
+        water0.GetComponent<Image>().color = SmoothPressureColor(0,p0);
+        water2.GetComponent<Image>().color = SmoothPressureColor(2,p2);
 
         const float Coeff = 0.6f;
         GetComponent<Animator>().SetFloat("position", 0.5f * (1 + Sature((q2 - q0) * Coeff)));

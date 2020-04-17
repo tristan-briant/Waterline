@@ -76,11 +76,11 @@ public class CrossManager : BaseComponent
     {
         SetPressure(Mathf.Clamp(0.125f * (p0 + p1 + p2 + p3), -1f, 1f));
 
-        water.GetComponent<Image>().color = PressureColor(q);
-        water0.GetComponent<Image>().color = PressureColor(p0);
-        water1.GetComponent<Image>().color = PressureColor(p1);
-        water2.GetComponent<Image>().color = PressureColor(p2);
-        water3.GetComponent<Image>().color = PressureColor(p3);
+        water.GetComponent<Image>().color = SmoothPressureColor(4,q);
+        water0.GetComponent<Image>().color = SmoothPressureColor(0,p0);
+        water1.GetComponent<Image>().color = SmoothPressureColor(1,p1);
+        water2.GetComponent<Image>().color = SmoothPressureColor(2,p2);
+        water3.GetComponent<Image>().color = SmoothPressureColor(3,p3);
 
         bubble20.GetComponent<Animator>().SetFloat("speed", SpeedAnim(f2, f0));
         bubble23.GetComponent<Animator>().SetFloat("speed", SpeedAnim(f2, f3));

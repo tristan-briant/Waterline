@@ -438,7 +438,7 @@ PrefabInstance:
     - target: {fileID: 114068754402846790, guid: 86d422bb40bce674285b3e486c8fef3a,
         type: 3}
       propertyPath: hacked
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114068754402846790, guid: 86d422bb40bce674285b3e486c8fef3a,
         type: 3}

@@ -10,9 +10,7 @@ public class BaseComponent : MonoBehaviour, IBeginDragHandler, IDragHandler,
     public string PrefabPath = "";
     protected float q = 0, f = 0;
     protected GameObject configPanel;
-    protected float p0, p1, p2, p3;
-
-
+    protected float p0, p1, p2, p3; 
     public int dir = 0;
     public bool destroyable = true;
     public bool isSuccess = false;
@@ -106,7 +104,7 @@ public class BaseComponent : MonoBehaviour, IBeginDragHandler, IDragHandler,
 
     protected Color PressureColor(float p)
     { // donne la convention de pression
-        float PMAX = 1.0f;
+        const float PMAX = 1.0f;
 
         Color max = new Color(0.3f, .80f, 0.80f);  // p=2
         Color zero = new Color(0, 100.0f / 255, 140.0f / 255);  // p=0
@@ -119,6 +117,14 @@ public class BaseComponent : MonoBehaviour, IBeginDragHandler, IDragHandler,
         else
             return Color.Lerp(min, zero, 1 + p / PMAX);
 
+    }
+
+    float[] sp = { 0, 0, 0, 0, 0, 0 };
+    protected Color SmoothPressureColor(int i, float p)
+    {
+        const float smooth = 0.2f; //smooth rate
+        sp[i] = (1 - smooth) * sp[i] + smooth * p;
+        return PressureColor(sp[i]);
     }
 
     public void Set_i_p(float[] p, float[] i)

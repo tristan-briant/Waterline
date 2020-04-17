@@ -59,8 +59,8 @@ public class diodeManager : BaseComponent {
 
     private void Update()
     {
-        water0.GetComponent<Image>().color = PressureColor(p0);
-        water2.GetComponent<Image>().color = PressureColor(p2);
+        water0.GetComponent<Image>().color = SmoothPressureColor(0,p0);
+        water2.GetComponent<Image>().color = SmoothPressureColor(2,p2);
 
         xp = 0.9f * xp + 0.1f * Mathf.Clamp(-f, 0, 0.1f);
 

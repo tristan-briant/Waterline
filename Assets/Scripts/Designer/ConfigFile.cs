@@ -89,7 +89,7 @@ public class ConfigFile : ConfigPanel
         ListFile();
     }
 
-    public void Close()
+    override public void Close()
     {
         Destroy(this.gameObject);
     }

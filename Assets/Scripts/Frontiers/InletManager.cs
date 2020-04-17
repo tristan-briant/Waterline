@@ -36,8 +36,8 @@ public class InletManager : BaseFrontier
 
 
 
-    float pp = 0;
-    float ii = 0;
+    //float pp = 0;
+    //float ii = 0;
     GameObject water, water0, arrow;
     //public bool isSuccess=false;
     public bool jelly = false;

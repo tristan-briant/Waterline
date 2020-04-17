@@ -64,6 +64,7 @@ public class LevelManager : MonoBehaviour
 
 
         /******* get the uri content: ****************/
+        /*
         AndroidJavaClass unityPlayerClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         AndroidJavaObject context = unityPlayerClass.GetStatic<AndroidJavaObject>("currentActivity");
 
@@ -73,7 +74,12 @@ public class LevelManager : MonoBehaviour
 
         string t = text.GetComponent<Text>().text;
         t += "URL Data :" + dataString;
+        
         text.GetComponent<Text>().text = t;
+
+        */
+
+
         /*
                 //FileDescriptor fd = inputPFD.getFileDescriptor();
                 AndroidJavaObject inputPFD = unityPlayerClass.GetStatic<AndroidJavaObject>("ParcelFileDescriptor");
@@ -84,7 +90,7 @@ public class LevelManager : MonoBehaviour
                 fd = inputPFD
 
         */
-
+/*
         AndroidJavaObject activityObject = unityPlayerClass.GetStatic<AndroidJavaObject>("currentActivity");
         AndroidJavaObject intent = activityObject.Call<AndroidJavaObject>("getIntent");
 
@@ -106,7 +112,7 @@ public class LevelManager : MonoBehaviour
         t += "\n Data : " + data;
         text.GetComponent<Text>().text = t;
 
-
+*/
 
         //StartCoroutine(GetText(dataString));
         /******* ! get the uri content: ****************/

@@ -65,10 +65,10 @@ public class PipelineDouble : BaseComponent
         SetPressure(Mathf.Clamp(0.25f * (p0 + p2), -1f, 1f));
         SetPressure(Mathf.Clamp(0.25f * (p1 + p3), -1f, 1f), 1);
 
-        water0.GetComponent<Image>().color = PressureColor(p0);
-        water1.GetComponent<Image>().color = PressureColor(p1);
-        water2.GetComponent<Image>().color = PressureColor(p2);
-        water3.GetComponent<Image>().color = PressureColor(p3);
+        water0.GetComponent<Image>().color = SmoothPressureColor(0,p0);
+        water1.GetComponent<Image>().color = SmoothPressureColor(1,p1);
+        water2.GetComponent<Image>().color = SmoothPressureColor(2,p2);
+        water3.GetComponent<Image>().color = SmoothPressureColor(3,p3);
 
         bubble1.GetComponent<Animator>().SetFloat("speed", -SpeedAnim(f0));
         bubble2.GetComponent<Animator>().SetFloat("speed", SpeedAnim(f1));

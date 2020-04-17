@@ -52,8 +52,8 @@ public class ElbowManager : BaseComponent {
     {
         SetPressure(Mathf.Clamp(0.25f * (p2 + p3), -1f, 1f));
 
-        water2.GetComponent<Image>().color = PressureColor(p2);
-        water3.GetComponent<Image>().color = PressureColor(p3);
+        water2.GetComponent<Image>().color = SmoothPressureColor(2,p2);
+        water3.GetComponent<Image>().color = SmoothPressureColor(3,p3);
         
         bubble.GetComponent<Animator>().SetFloat("speed", SpeedAnim());
         

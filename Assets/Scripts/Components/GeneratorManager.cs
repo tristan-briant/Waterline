@@ -84,8 +84,8 @@ public class GeneratorManager :  BaseComponent {
 
     private void Update()
     {
-        water0.GetComponent<Image>().color = PressureColor(p0);
-        water2.GetComponent<Image>().color = PressureColor(p2);
+        water0.GetComponent<Image>().color = SmoothPressureColor(0,p0);
+        water2.GetComponent<Image>().color = SmoothPressureColor(2,p2);
 
 
         angle += 3.14f * velocity * 3;

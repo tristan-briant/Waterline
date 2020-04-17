@@ -73,9 +73,9 @@ public class TeManager : BaseComponent
     {
         SetPressure(Mathf.Clamp(0.5f * (p0 + p2 + p3) / 3f, -1f, 1f));
 
-        water0.GetComponent<Image>().color = PressureColor(p0);
-        water2.GetComponent<Image>().color = PressureColor(p2);
-        water3.GetComponent<Image>().color = PressureColor(p3);
+        water0.GetComponent<Image>().color = SmoothPressureColor(0,p0);
+        water2.GetComponent<Image>().color = SmoothPressureColor(2,p2);
+        water3.GetComponent<Image>().color = SmoothPressureColor(3,p3);
 
         bubble20.GetComponent<Animator>().SetFloat("speed", SpeedAnim(f2, f0));
         bubble23.GetComponent<Animator>().SetFloat("speed", SpeedAnim(f2, f3));

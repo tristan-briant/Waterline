@@ -89,8 +89,8 @@ public class ValveManager : BaseComponent {
 
     private void Update()
     {
-        water0.GetComponent<Image>().color = PressureColor(p0);
-        water2.GetComponent<Image>().color = PressureColor(p2);
+        water0.GetComponent<Image>().color = SmoothPressureColor(0,p0);
+        water2.GetComponent<Image>().color = SmoothPressureColor(2,p2);
         
         bubble.GetComponent<Animator>().SetFloat("speed", -SpeedAnim());
 

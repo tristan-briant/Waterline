@@ -82,9 +82,9 @@ public class InductorManager : BaseComponent
 
     private void Update()
     {
-        water.GetComponent<Image>().color = PressureColor(q);
-        water0.GetComponent<Image>().color = PressureColor(p0);
-        water2.GetComponent<Image>().color = PressureColor(p2);
+        water.GetComponent<Image>().color = SmoothPressureColor(4,q);
+        water0.GetComponent<Image>().color = SmoothPressureColor(0,p0);
+        water2.GetComponent<Image>().color = SmoothPressureColor(2,p2);
 
         GetComponent<Animator>().SetFloat("speed", -SpeedAnim());
     }
