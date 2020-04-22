@@ -1,12 +1,10 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
 using System;
 using System.IO;
-using System.Net.Http;
-using System.Web;
+using SimpleFileBrowser;
 
 public class Designer : MonoBehaviour
 {
@@ -15,75 +13,51 @@ public class Designer : MonoBehaviour
     const int MinSize = 3;
     static public int N, M;
 
-    public GameObject Pg;
+    //public GameObject Pg;
 
     static public string PGdata;
 
-    private void Awake()
-    {
-        Pg = GameObject.Find("Playground");
-    }
 
     private void Start()
     {
+        GameObject Pg = GameObject.Find("Playground");
         N = Pg.GetComponent<PlaygroundParameters>().N;
         M = Pg.GetComponent<PlaygroundParameters>().M;
     }
 
-    public void MakeThumb(string filename)
+    static public byte[] MakeThumbBytes(int size = 256)
     {
+        //prepare l'image
+        GameObject Pg = GameObject.Find("Playground");
         GameObject canvas = GameObject.Find("CanvasThumbnail");
         Pg.transform.SetParent(canvas.transform);
         GameController gc = GameObject.FindGameObjectWithTag("GameController").GetComponent<GameController>();
         gc.ResizePlayGround();
 
-        Texture2D texture = new Texture2D(256, 256, TextureFormat.RGB24, false);
+        // Prepare la texture
+        RenderTexture rt = new RenderTexture(size, size, 24);
         Camera cam = GameObject.Find("CameraThumbnail").GetComponent<Camera>();
+        cam.targetTexture = rt;
         cam.Render();
-        RenderTexture.active = cam.targetTexture;
+
+
+        Texture2D texture = new Texture2D(size, size, TextureFormat.RGB24, false);
+
+        RenderTexture.active = rt;//cam.targetTexture;
         texture.ReadPixels(new Rect(0, 0, cam.targetTexture.width, cam.targetTexture.height), 0, 0);
 
         texture.Apply();
 
-        byte[] bytes = texture.EncodeToPNG();
-
-        // save the image
-
-        File.WriteAllBytes(filename, bytes);
-
+        //Remet tout en ordre
         canvas = GameObject.Find("PlaygroundHolder");
         Pg.transform.SetParent(canvas.transform);
         gc.ResizePlayGround();
 
+
+        return texture.EncodeToPNG();
     }
 
-    IEnumerator RenderThumbnail()
-    {
-
-        Texture2D texture = new Texture2D(256, 256, TextureFormat.RGB24, false);
-
-        Camera cam = GameObject.Find("CameraThumbnail").GetComponent<Camera>();
-        // Initialize and render
-
-        cam.Render();
-        RenderTexture.active = cam.targetTexture;
-
-        // put buffer into texture
-        texture.ReadPixels(new Rect(0, 0, cam.targetTexture.width, cam.targetTexture.height), 0, 0);
-
-        yield return 0;
-
-        texture.Apply();
-
-        yield return 0;
-
-        byte[] bytes = texture.EncodeToPNG();
-
-        // save the image
-        string imagePath = "amazingPath.png";
-        File.WriteAllBytes(Application.persistentDataPath + Path.DirectorySeparatorChar + imagePath, bytes);
-
-    }
+    public void MakeThumb(string filename, int size = 256) => File.WriteAllBytes(filename, MakeThumbBytes());
 
     //[ContextMenu("SaveToFile")]
     public void SaveToFile()
@@ -97,13 +71,11 @@ public class Designer : MonoBehaviour
 
         File.WriteAllText(file, PGdata);
 
-        MakeThumb(Path.Combine(Application.persistentDataPath, filename + ".png"));
+        MakeThumb(Path.Combine(Application.persistentDataPath, filename + ".png"), 1024);
     }
-
 
     static public void SaveToPrefs()
     {
-
         LevelManager lvm = GameObject.Find("LevelManager").GetComponent<LevelManager>();
 
         if (lvm.currentLevel == 0 || lvm.designerScene)
@@ -113,8 +85,6 @@ public class Designer : MonoBehaviour
 
             PlayerPrefs.SetString("SandBox", PGdata);
         }
-        Debug.Log(PGdata);
-
     }
 
     static public void LoadFromPrefs()
@@ -193,7 +163,7 @@ public class Designer : MonoBehaviour
 
     void ClearPlayground()
     {
-        Pg = GameObject.Find("Playground");
+        GameObject Pg = GameObject.Find("Playground");
         int count = Pg.transform.childCount;
         for (int i = 0; i < count; i++)        // On retire tout
         {
@@ -463,6 +433,8 @@ public class Designer : MonoBehaviour
 
     void DrawEdges()
     {
+        GameObject Pg = GameObject.Find("Playground");
+
         foreach (Transform child in GameObject.Find("RightEdge").transform)
             Destroy(child.gameObject);
 
@@ -494,7 +466,7 @@ public class Designer : MonoBehaviour
 
     public void ResetField()
     {
-        Pg = GameObject.Find("Playground");
+        GameObject Pg = GameObject.Find("Playground");
         PlaygroundParameters param = Pg.GetComponent<PlaygroundParameters>();
         param.N = N;
         param.M = M;
@@ -536,6 +508,8 @@ public class Designer : MonoBehaviour
 
     public void ReduceWidth()
     {
+        GameObject Pg = GameObject.Find("Playground");
+
         if (N > MinSize)
         {
             int i = N - 2;
@@ -560,6 +534,8 @@ public class Designer : MonoBehaviour
 
     public void IncreaseWidth()
     {
+        GameObject Pg = GameObject.Find("Playground");
+
         if (N < MaxSize)
         {
             int i = N - 1;
@@ -592,6 +568,7 @@ public class Designer : MonoBehaviour
 
     public void ReduceHeight()
     {
+        GameObject Pg = GameObject.Find("Playground");
         if (M > MinSize)
         {
             int j = M - 2;
@@ -646,6 +623,7 @@ public class Designer : MonoBehaviour
 
     public void IncreaseHeight()
     {
+        GameObject Pg = GameObject.Find("Playground");
         if (M < MaxSize)
         {
             int j = M - 1;
@@ -705,6 +683,7 @@ public class Designer : MonoBehaviour
 
     public void IncreaseBeach(bool left)
     {
+        GameObject Pg = GameObject.Find("Playground");
         int j = 0;
         int i = 0;
         if (!left) i = N - 1;
@@ -733,6 +712,7 @@ public class Designer : MonoBehaviour
 
     public void DecreaseBeach(bool left)
     {
+        GameObject Pg = GameObject.Find("Playground");
         int j = 0;
         int i = 0;
         if (!left) i = N - 1;
@@ -810,27 +790,75 @@ public class Designer : MonoBehaviour
 
     public void Paste()
     {
+
         string clipBoard = GUIUtility.systemCopyBuffer;
         Debug.Log(clipBoard);
         Debug.Log(CompressData(clipBoard, false));
         PGdata = CompressData(clipBoard, false);
 
         LoadFromString();
+
+        //Debug.Log(EditorUtility.OpenFilePanel("Load RTF note file", "", ""));
+        //StartCoroutine("ShareDataLevel");
+    }
+
+    public void TestShare()
+    {
+
+        //Application.OpenURL("file://");
+        FileBrowser.ShowSaveDialog((path) => { OpenAndReadFile(path); }, null, false, "content://", "Select File", "Select");
+
+
+    }
+
+    void OpenAndReadFile(string path)
+    {
+        Debug.Log(path);
+
+        if (path != "")
+        {
+            Text tx=GameObject.Find("DebugText").GetComponent<Text>();
+            byte[] bt = FileBrowserHelpers.ReadBytesFromFile(path);
+            tx.text = path + "\n";
+            tx.text  += System.Text.Encoding.ASCII.GetString(bt);
+        }
     }
 
     public void SendMail()
     {
+        StartCoroutine("TakeSSAndShare");
+    }
+
+    private IEnumerator ShareDataLevel()
+    {
+        yield return new WaitForEndOfFrame();
+
+        Designer.SaveToString();
+        string str = Designer.PGdata;
+        string filePath = Path.Combine(Application.temporaryCachePath, "custom-level.waterline");
+        File.WriteAllText(filePath, str);
+
+        new NativeShare().AddFile(filePath).SetSubject("Waterline Custom Level").SetText("Custom level").Share();
+    }
+
+    private IEnumerator TakeSSAndShare()
+    {
+        yield return new WaitForEndOfFrame();
+
+        string filePath = Path.Combine(Application.temporaryCachePath, "Screenshot.png");
+        File.WriteAllBytes(filePath, Designer.MakeThumbBytes(1024));
+        new NativeShare().AddFile(filePath).SetSubject("Waterline Screenshot").SetText("Screenshot").Share();
+
+        // Share on WhatsApp only, if installed (Android only)
+        //if( NativeShare.TargetExists( "com.whatsapp" ) )
+        //	new NativeShare().AddFile( filePath ).SetText( "Hello world!" ).SetTarget( "com.whatsapp" ).Share();
+    }
+
+    public void SendMailOld()
+    {
         SaveToString();
         string cpstr = CompressData(PGdata);
-        /*Debug.Log(PGdata);
-        Debug.Log(CompressData(PGdata));
-        Debug.Log(CompressData(cpstr,false));
-        Debug.Log(PGdata.Equals(CompressData(CompressData(PGdata), false)));
-        Debug.Log(" " + PGdata.Length + "   " + cpstr.Length);*/
-
-
         cpstr = "Copy all and paste in Waterline Sand Box:%0A#" + cpstr + "#";
-
         string url = "";
 
 #if UNITY_ANDROID
@@ -845,7 +873,7 @@ public class Designer : MonoBehaviour
 
         //Application.OpenURL(url);
         //printString();
- Application.OpenURL("file://");
+        Application.OpenURL("file://");
 
     }
 
@@ -962,5 +990,5 @@ public class Designer : MonoBehaviour
         Debug.Log(str);
 
     }
- // Environment.GetCommandLineArgs Method to open 
+    // Environment.GetCommandLineArgs Method to open 
 }

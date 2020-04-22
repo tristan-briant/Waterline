@@ -58,3 +58,6 @@ TagManager:
   - name: Message
     uniqueID: 2098975877
     locked: 0
+  - name: Tutorial
+    uniqueID: 2476771629
+    locked: 0

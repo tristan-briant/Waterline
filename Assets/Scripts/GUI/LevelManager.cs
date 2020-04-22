@@ -64,20 +64,6 @@ public class LevelManager : MonoBehaviour
 
 
         /******* get the uri content: ****************/
-        /*
-        AndroidJavaClass unityPlayerClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-        AndroidJavaObject context = unityPlayerClass.GetStatic<AndroidJavaObject>("currentActivity");
-
-        String dataString = context.Call<AndroidJavaObject>("getIntent").Call<String>("getDataString");
-
-        Debug.LogError("URL Data " + dataString);
-
-        string t = text.GetComponent<Text>().text;
-        t += "URL Data :" + dataString;
-        
-        text.GetComponent<Text>().text = t;
-
-        */
 
 
         /*
@@ -90,29 +76,29 @@ public class LevelManager : MonoBehaviour
                 fd = inputPFD
 
         */
-/*
-        AndroidJavaObject activityObject = unityPlayerClass.GetStatic<AndroidJavaObject>("currentActivity");
-        AndroidJavaObject intent = activityObject.Call<AndroidJavaObject>("getIntent");
+        /*
+                AndroidJavaObject activityObject = unityPlayerClass.GetStatic<AndroidJavaObject>("currentActivity");
+                AndroidJavaObject intent = activityObject.Call<AndroidJavaObject>("getIntent");
 
-        // Now actually get the data. We should be able to get it from the result of AndroidJNI.CallObjectMethod, but I don't now how so just call again
-        AndroidJavaObject intentURI = intent.Call<AndroidJavaObject>("getData");
+                // Now actually get the data. We should be able to get it from the result of AndroidJNI.CallObjectMethod, but I don't now how so just call again
+                AndroidJavaObject intentURI = intent.Call<AndroidJavaObject>("getData");
 
-        // Open the URI as an input channel
-        AndroidJavaObject contentResolver = activityObject.Call<AndroidJavaObject>("getContentResolver");
-        AndroidJavaObject inputStream = contentResolver.Call<AndroidJavaObject>("openInputStream", intentURI);
-        //AndroidJavaObject inputChannel = inputStream.Call<AndroidJavaObject>("getChannel");
+                // Open the URI as an input channel
+                AndroidJavaObject contentResolver = activityObject.Call<AndroidJavaObject>("getContentResolver");
+                AndroidJavaObject inputStream = contentResolver.Call<AndroidJavaObject>("openInputStream", intentURI);
+                //AndroidJavaObject inputChannel = inputStream.Call<AndroidJavaObject>("getChannel");
 
-        byte[] data = inputStream.Call<byte[]>("readAllBytes");
-        // Close the streams
-        inputStream.Call("close");
+                byte[] data = inputStream.Call<byte[]>("readAllBytes");
+                // Close the streams
+                inputStream.Call("close");
 
 
 
-        //data = ImportFromIntent();
-        t += "\n Data : " + data;
-        text.GetComponent<Text>().text = t;
+                //data = ImportFromIntent();
+                t += "\n Data : " + data;
+                text.GetComponent<Text>().text = t;
 
-*/
+        */
 
         //StartCoroutine(GetText(dataString));
         /******* ! get the uri content: ****************/
@@ -191,6 +177,35 @@ public class LevelManager : MonoBehaviour
     }
     */
 
+
+    public void LoadFile()
+    {
+        AndroidJavaClass unityPlayerClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+        AndroidJavaObject context = unityPlayerClass.GetStatic<AndroidJavaObject>("currentActivity");
+
+        String dataString = context.Call<AndroidJavaObject>("getIntent").Call<String>("getDataString");
+
+        //Debug.LogError("URL Data " + dataString);
+
+        string t = text.GetComponent<Text>().text;
+        t += "URL Data: " + dataString;
+
+        text.GetComponent<Text>().text = t;
+
+        //SimpleFileBrowser.FileBrowser.ShowLoadDialog(null, null, false, dataString, "Load", "select");
+
+        text.GetComponent<Text>().text +=SimpleFileBrowser.FileBrowserHelpers.FileExists(dataString);
+        /*if (dataString != "")
+        {
+            //Text tx=GameObject.Find("DebugText").GetComponent<Text>();
+            byte[] bt = SimpleFileBrowser.FileBrowserHelpers.ReadBytesFromFile(dataString);
+            text.GetComponent<Text>().text += System.Text.Encoding.ASCII.GetString(bt);
+        }*/
+
+
+    }
+
+
     private byte[] ImportFromIntent()
     {
         try
@@ -236,7 +251,7 @@ public class LevelManager : MonoBehaviour
         }
         catch (System.Exception ex)
         {
-
+            Debug.Log(ex);
             // Handle error
         }
         return null;

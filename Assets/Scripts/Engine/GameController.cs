@@ -20,6 +20,7 @@ public class GameController : MonoBehaviour
     public Text nextLevelText;
     public Button nextButton;
     public Button prevButton;
+    public Button tipButton;
 
     public bool StopperChanged;
 
@@ -424,8 +425,9 @@ public class GameController : MonoBehaviour
     public void LoadLevel()
     {
         StopAllCoroutines();
-        string filename = LVM.GetPlaygroundName(currentLevel);
-        GetComponent<Designer>().LoadFromRessources(filename);
+        string levelname = LVM.GetPlaygroundName(currentLevel);
+        LVM.currentLevel = currentLevel;
+        GetComponent<Designer>().LoadFromRessources(levelname);
 
         Deck.GetComponent<DeckManager>().DrawDeck();
 
@@ -438,6 +440,19 @@ public class GameController : MonoBehaviour
             nextButton.gameObject.SetActive(true);
         else
             nextButton.gameObject.SetActive(false);
+
+        if (Resources.Load("Tutos/" + levelname))
+        {
+            tipButton.gameObject.SetActive(true);
+            if (LVM.LevelIsCompleted(currentLevel))
+                ShowTip(true);
+        }
+        else
+        {
+            tipButton.gameObject.SetActive(false);
+            HideTip();
+        }
+
 
         levelText.gameObject.SetActive(true);
         levelText.text = levelText.GetComponent<languageManager>().GetText() + currentLevel;
@@ -489,7 +504,21 @@ public class GameController : MonoBehaviour
         Engine.Reset_p_i(composants);
     }
 
+    public void ShowTip(bool forceOn = false)
+    {
 
+        if (SceneManager.GetSceneByName("Tuto").isLoaded && !forceOn)
+            SceneManager.UnloadSceneAsync("Tuto");
+        else
+            SceneManager.LoadSceneAsync("Tuto", LoadSceneMode.Additive);
+
+    }
+
+    public void HideTip()
+    {
+        if (SceneManager.GetSceneByName("Tuto").isLoaded)
+            SceneManager.UnloadSceneAsync("Tuto");
+    }
 
 }
 

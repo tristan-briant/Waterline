@@ -10,11 +10,6 @@ public class CategorySelection : MonoBehaviour {
     public GameObject deck;
     public GameObject components;
 
-    /*private void Start()
-    {
-        deck = GameObject.Find("DeckHolder");
-        components= GameObject.Find("ContentComponent");
-    }*/
 
     public void Toggle()
     {
