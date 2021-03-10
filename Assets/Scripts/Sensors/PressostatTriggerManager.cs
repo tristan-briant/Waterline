@@ -5,7 +5,8 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 
-public class PressostatTriggerManager : PressostatManager {
+public class PressostatTriggerManager : PressostatManager
+{
 
     public float raiseTime = 5.0f;
     public float RaiseTime { get => raiseTime; set => raiseTime = Mathf.Clamp(value, 1f, 20f); }
@@ -48,7 +49,6 @@ public class PressostatTriggerManager : PressostatManager {
     public override void Reset_i_p()
     {
         TriggerEnd();
-        Debug.Log("Reset");
         base.Reset_i_p();
     }
 
@@ -57,7 +57,6 @@ public class PressostatTriggerManager : PressostatManager {
     {
         RaiseTime = timeOut;
         coroutine = CountDown();
-        Debug.Log("message reçu");
         StartCoroutine(coroutine);
         rising = true;
     }
@@ -70,7 +69,8 @@ public class PressostatTriggerManager : PressostatManager {
         rising = false;
     }
 
-    IEnumerator CountDown() {
+    IEnumerator CountDown()
+    {
         float time = 0;
 
         while (true)
@@ -79,14 +79,11 @@ public class PressostatTriggerManager : PressostatManager {
             time += Time.deltaTime;
             CalculateSetPoints(time);
         }
-        
     }
 
     override public void UpdateSuccess()
     {
- 
-
-        if (!rising || itemBeingDragged!=null)
+        if (!rising || itemBeingDragged != null)
             success = 0;
         else if (setPointLow < qq && qq < setPointHigh)
             success = Mathf.Clamp01(success + Time.deltaTime / RaiseTime * 1.2f);
@@ -94,7 +91,7 @@ public class PressostatTriggerManager : PressostatManager {
 
     public override void Calcule_i_p(float[] p, float[] i, float dt)
     {
-       
+
         p2 = p[2];
 
         q += i[2] / C * dt;
@@ -104,5 +101,5 @@ public class PressostatTriggerManager : PressostatManager {
         i[2] = (p2 - q) / R;
     }
 
- 
+
 }
